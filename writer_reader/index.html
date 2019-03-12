@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="../lib/bootstrap.css">
+  <script src="../lib/jquery-3.3.1.js"></script>
+  <script src="../lib/bootstrap.js"></script>
+  <title>Document</title>
+</head>
+<body>
+  <canvas id="myCanvas" width="3000" height="3000" style="position: absolute;">
+
+  </canvas>
+  <div class="container">
+    <div class="row clearfix" style="padding-top: 150px;padding-bottom:150px;text-align:center;">
+  		<div class="col-md-2 column">
+  			 <button type="button" class="btn btn-lg btn-primary" onclick="read()">读者1</button>
+  		</div>
+  		<div class="col-md-2 column">
+  			 <button type="button" class="btn btn-lg btn-primary " onclick="read()">读者2</button>
+  		</div>
+  		<div class="col-md-2 column">
+  			 <button type="button" class="btn btn-lg btn-primary" onclick="read()">读者3</button>
+  		</div>
+  		<div class="col-md-2 column">
+  			 <button type="button" class="btn btn-lg btn-primary" onclick="read()">读者4</button>
+  		</div>
+  		<div class="col-md-2 column">
+  			 <button type="button" class="btn btn-primary btn-lg" onclick="read()">读者5</button>
+  		</div>
+  		<div class="col-md-2 column">
+  			 <button type="button" class="btn btn-primary btn-lg" onclick="read()">读者6</button>
+  		</div>
+  	</div>
+  	<div class="row clearfix" style="text-align:center;">
+      <div class="col-md-12 column">
+  			 <button type="button" class="btn btn-danger btn-lg"style="font-size:50px">文章</button>
+  		</div>
+  	</div>
+  	<div class="row clearfix"style="padding-top: 150px;text-align:center">
+  		<div class="col-md-4 column">
+  			 <button type="button" class="btn btn-lg btn-success" onclick="writer()">写者A</button>
+  		</div>
+  		<div class="col-md-4 column">
+  			 <button type="button" class="btn btn-lg btn-success" onclick="writer()">写者B</button>
+  		</div>
+  		<div class="col-md-4 column">
+  			 <button type="button" class="btn btn-lg btn-success" onclick="writer()">写者C</button>
+  		</div>
+  	</div>
+</div>
+</body>
+<script type="text/javascript">
+var Rmutex=1,Wmutex=1,Rcount=0;                      //初始化 读互斥 写互斥 读人数
+
+var clear=new Array(),i=0;
+var judge;
+var c = document.getElementById("myCanvas");         //初始化
+var ctx = c.getContext("2d");
+var context =  myCanvas.getContext("2d");
+function Random(min,max) {
+    judge=Math.round(Math.random() * (max - min)) + min;
+    switch(judge){
+      case 1:
+      read(171,171);
+      break;
+      case 2:
+      read(494,166);
+      break;
+      case 3:
+      read(794,171);
+      break;
+      case 4:
+      read(1111,171);
+      break;
+      case 5:
+      read(1420,174);
+      break;
+      case 6:
+      read(1728,163);
+      break;
+      case 7:
+      writer(353,592);
+      break;
+      case 8:
+      writer(958,592);
+      break;
+      case 9:
+      writer(1593,605);
+      break;
+      case 10:
+      writer(1593,605);
+      break;
+      case 11:
+      writer(958,592);
+      break;
+    }
+}
+self.setInterval("Random(1,11)",180)          //三秒延迟
+function read(x,y){
+  if(Wmutex===1||Rcount>0){                          //写为0或者读不为0
+    clear[clear.length]={
+      x:x,
+      y:y,
+      z:1
+    }
+  Rmutex--;
+  Rcount++;
+  if(Rcount===1){
+    Wmutex--;
+  }
+  Rmutex++;
+
+
+//读操作
+  context.strokeStyle ='#FF4081';           //线条颜色
+  context.lineWidth = 8;                    //设置线宽
+       context.beginPath();
+       context.moveTo(1000,400);            //起始位置
+       context.lineTo(x,y); //结束位置
+       context.stroke();                    //结束
+//读操作结束
+
+}
+}
+function writer(x,y){
+  if(Wmutex===1&&Rcount===0){
+    clear[clear.length]={
+      x:x,
+      y:y,
+      z:2
+    }
+Wmutex--;
+  //写操作
+    context.strokeStyle ='#FF4081';           //线条颜色
+    context.lineWidth = 8;                    //设置线宽
+         context.beginPath();
+         context.moveTo(1000,400);            //起始位置
+         context.lineTo(x,y); //结束位置
+         context.stroke();                    //结束
+  //写操作结束
+
+}
+}
+
+function clock(){
+if(clear[i]){
+
+if(clear[i].z==1){
+                                     //读结束
+  Rmutex--;
+  Rcount--;
+  if(Rcount===0){
+    Wmutex++;
+  }
+  Rmutex++;
+
+  context.strokeStyle ='#ffffff';           //线条颜色
+  context.lineWidth = 10;                   //设置线宽
+  context.beginPath();
+  context.moveTo(1000,400);                 //起始位置
+  context.lineTo(clear[i].x,clear[i].y);    //结束位置
+  context.stroke();
+  i++;
+}else{
+Wmutex++;                                 //写结束
+context.strokeStyle ='#ffffff';           //线条颜色
+context.lineWidth = 10;                   //设置线宽
+context.beginPath();
+context.moveTo(1000,400);                 //起始位置
+context.lineTo(clear[i].x,clear[i].y);    //结束位置
+context.stroke();
+i++;
+}
+}
+}
+self.setInterval("clock()",300)          //三秒延迟
+</script>
+</html>

@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- 适配移动设备 -->
+	<title>工业App</title>
+	<link rel="stylesheet" href="index.css">
+	<link rel="stylesheet" href="../vis-4.21.0/dist/vis.css">
+	<link rel="stylesheet" href="../lib/bootstrap.css">
+	<link rel="stylesheet" href="../css/style.css" media="screen" type="text/css"/>
+	<!-- <link rel="stylesheet" href="lib/jquery-ui.css"> -->
+	<link rel="stylesheet" href="../lib/bootstrap-table.css">
+	<!-- <script src="lib/jquery-ui.js"></script> -->
+	<script src="../lib/jquery-3.3.1.js"></script>
+	<script src="../lib/bootstrap.js"></script>
+	<script src='../vis-4.21.0/dist/vis.js'></script>
+	<script src="../lib/bootstrap-table.js"></script>
+	<style>
+div:focus
+{
+	border-style:solid;
+ border-color: #FF8C00;
+ box-shadow: 0 0 15px #FF8C00;
+}
+	</style>
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-inverse" role="navigation" style="mar">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<!-- <div class="navbar-header">
+				<a class="navbar-brand" href="#">装备需求测试系统</a>
+			</div> -->
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li  class="dropdown">
+						<a style="font-size:14px" href="#" class="dropdown-toggle" data-toggle="dropdown">类别<span class="caret"></span></a>
+						<ul  class="dropdown-menu" role="menu">
+							<li ><a href="../Radar/index.html">雷达</a></li>
+							<li class="divider"></li>
+							<li><a href="../Plane/index.html">飞机</a></li>
+							<li class="divider"></li>
+							<li class="active"><a href="index.html">导弹</a></li>
+						</ul>
+					</li>
+				</ul>
+				<div class="navbar-form navbar-left form-group">
+					<input id="allSearch" type="text" class="form-control" placeholder="name">
+					<button type="search" class="btn btn-default" onclick="allSearch()">Search</button>
+				</div>
+	<h3 class="nav navbar-nav" style="margin-left: 430px;margin-top: 10px;color:white;font-size: 28px;font-family:'微软雅黑';font-weight:550">装备需求测试系统</h3>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a style="font-size:14px" href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
+				<ul id="login-dp" class="dropdown-menu">
+					<li>
+						 <div class="row">
+								<div class="col-md-12">
+									 <form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
+											<div class="form-group">
+												 <label class="sr-only" for="exampleInputEmail2">Email address</label>
+												 <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Email address" required>
+											</div>
+											<div class="form-group">
+												 <label class="sr-only" for="exampleInputPassword2">Password</label>
+												 <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password" required>
+																							 <div class="help-block text-right"><a href="">Forget the password ?</a></div>
+											</div>
+											<div class="form-group">
+												 <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+											</div>
+									 </form>
+								</div>
+						 </div>
+					</li>
+				</ul>
+					</li>
+				</ul>
+			</div><!-- /.navbar-collapse -->
+		</div><!-- /.container-fluid -->
+	</nav>
+
+	<div style="margin-bottom:4px">
+	<link href="css/font-awesome.css" rel="stylesheet">
+		<ul id="breadcrumb">
+			<li><a href="map.html"><span class="	glyphicon glyphicon-play"> </span></a></li>
+			<li><a href="index.html"><span class="glyphicon glyphicon-th-large"> </span> 浏览</a></li>
+			<li><a href="search.html"><span class="glyphicon glyphicon-search"></span> 搜索</a></li>
+			<li><a href="newNode.html"><span class="glyphicon glyphicon-plus"> </span> 测试项</a></li>
+			<li><a href="newConfig.html"><span class="glyphicon glyphicon-plus"> </span> 配置项</a></li>
+			<li><a href="newClass.html"><span class="glyphicon glyphicon-plus"> </span> 基础导弹</a></li>
+			<li><a href="newRadar.html"><span class="glyphicon glyphicon-plus"> </span> 实例导弹</a></li>
+		</ul>
+	</div>
+  <div class="container">
+		<div class="row clearfix">
+<!-- 左边图 -->
+			<div class="col-md-6 column" style="height:830px;overflow-x:scroll;overflow-y:scroll;background:white">
+				<div id="mynetwork">
+				</div>
+				<button type="button" class="btn btn-block btn-success btn-lg"onclick="allMap()">查看完整图</button>
+			</div>
+<!-- 左边图结束 -->
+<!-- 右半部分 -->
+<!-- 选择框 -->
+			<div class="col-md-6 column">
+				<ul class="nav nav-tabs">
+					<li >
+						 <a href="newRadar.html">实例导弹</a>
+					</li>
+					<li>
+						 <a href="newClass.html">基础导弹</a>
+					</li>
+					<li class="active">
+						 <a href="newConfig.html">配置项</a>
+					</li>
+					<li  >
+						 <a href="newNode.html">测试项</a>
+					</li>
+				</ul>
+<!-- 选择框结束			 -->
+<!-- 导弹名称 -->
+				<form role="form">
+					<div class="input-group input-group-lg" style="padding:30px">
+            <span class="input-group-addon">导弹名称:</span>
+            <input id="a" type="text" class="form-control" >
+        </div>
+				<div class="input-group input-group-lg"style="padding:0px 30px 30px 30px">
+					<span class="input-group-addon">导弹描述:</span>
+					<input id="b" type="text" class="form-control" >
+			</div>
+				</form>
+<!-- 导弹名称结束 -->
+<!-- 主体框 -->
+				<!-- <div class="row clearfix" style="width:300px;height:430px;overflow-x:scroll;overflow-y:scroll;  border-style: solid;
+  border-width:1px;">
+					<div class="col-md-12 column">
+					</div>
+				</div> -->
+	<div  class="col-md-11 column"style="height:552px;overflow-x:scroll;overflow-y:scroll;  border-style: solid;
+border-width:1px;border-color:rgb(209, 209, 209);margin:0px 37px 10px 37px;background:white">
+<!-- 新增按钮开始 -->
+<div id="new" class="row clearfix">
+	<div class="col-md-2 column">
+	</div>
+	<div class="col-md-8 column">
+		<button  type="button" class="btn btn-block btn-lg btn-danger"data-toggle="modal" data-target="#exampleModal" style="margin-top:30px">新增测试项</button>
+	</div>
+	<div class="col-md-2 column">
+	</div>
+</div>
+<!-- 新增按钮结束 -->
+</div>
+<!-- 主体框结束 -->
+<!-- 下方按钮		 -->
+				<div class="row clearfix" style="padding:35px">
+					<div class="col-md-4 column">
+						 <button type="button" class="btn btn-block btn-danger btn-lg" id="radarCancel">取消</button>
+					</div>
+					<div class="col-md-4 column">
+					</div>
+					<div class="col-md-4 column">
+						 <button type="button" class="btn btn-lg btn-success btn-block" id="radarConfirm">确认</button>
+					</div>
+				</div>
+<!-- 下方按钮结束	 -->
+<!-- 右半部分结束			 -->
+		</div>
+		<div class="row clearfix">
+			<div class="col-md-3 column">
+			</div>
+			<div class="col-md-3 column">
+			</div>
+			<div class="col-md-3 column">
+			</div>
+			<div class="col-md-3 column">
+				 <address> <strong>Twitter, Inc.</strong><br /> 795 Folsom Ave, Suite 600<br /> San Francisco, CA 94107<br /> <abbr title="Phone">P:</abbr> (123) 456-7890</address>
+			</div>
+		</div>
+	</div>
+	</div>
+	<!-- 模态框 -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="exampleModalLabel">新增测试项</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form>
+						<div class="input-group input-group-lg " style="padding-top: 30px">
+			          <input id="recipient-name" type="text" class="form-control" placeholder="搜索名称"style="text-align: center;">
+			          <span class="input-group-btn">
+			            <button type="button" class="btn btn-primary btn-lg" onclick="search()">
+			              <span class="glyphicon glyphicon-search" style="color: rgb(255, 255, 255); font-size: 27px;"></span>
+			            </button>
+			          </span>
+			      </div>
+	          <div class="form-group" style="padding-top:20px">
+
+	            <textarea class="form-control" id="message-text" placeholder="描述" rows="10"style="text-align: center; font-size:18px"></textarea>
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" onclick="addTest()">Send</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- 模态框 -->
+	<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="exampleModalLabel1">新增测试子项</h4>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="input-group input-group-lg " style="padding-top: 30px">
+								<input id="recipient-name1" type="text" class="form-control" placeholder="搜索名称"style="text-align: center;">
+								<span class="input-group-btn">
+									<button type="button" class="btn btn-primary btn-lg" onclick="search1()">
+										<span class="glyphicon glyphicon-search" style="color: rgb(255, 255, 255); font-size: 27px;"></span>
+									</button>
+								</span>
+						</div>
+						<div class="form-group" style="padding-top:20px">
+
+							<textarea class="form-control" id="message-text1" placeholder="描述" rows="10"style="text-align: center; font-size:18px"></textarea>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" onclick="addTest1()">Send</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+function allMap(){
+  window.open("map.html",'newwindow');
+}
+var levels={
+  1:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background:'#3498db', highlight: { border: '#131418', background: '#3498db' }, hover: { border: '#131418', background: '#3498db' } }, fixed: { x:false, y:false }, font:{ color:"#ffffff", size:30, face:"arial", }, heightConstraint:{ minimum:40, },
+  level:100,},
+  102:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#2ecc71', highlight: { border: '#131418', background: '#2ecc71' }, hover: { border: '#131418', background: '#2ecc71' } }, fixed: { x:false, y:false }, font:{ color:"#ffffff", size:30, face:"arial", }, heightConstraint:{ minimum:40, },
+  level:98,},
+  203:{ borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#9C27B0', highlight: { border: '#131418', background: '#9C27B0' }, hover: { border: '#131418', background: '#9C27B0' } }, fixed: { x:false, y:false }, font:{ color:"#ffffff", size:30, face:"arial", }, heightConstraint:{ minimum:40, },
+  level:96,},
+  304:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:95,},
+    305:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:94,},
+    306:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:93,},
+    307:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:92,},
+    308:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:91,},
+    309:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:90,},
+    310:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:89,},
+    311:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:88,},
+    312:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:87,},
+    313:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:86,},
+    314:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:85,},
+    315:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:84,},
+    316:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:83,},
+    317:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:82,},
+    318:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:81,},
+    319:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:80,},
+    320:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:79,},
+    321:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:78,},
+    322:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:77,},
+    323:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:76,},
+    324:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:75,},
+    325:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:74,},
+    326:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:73,},
+    327:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:72,},
+    328:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:71,},
+    329:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:70,},
+    330:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:69,},
+    331:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:68,},
+    332:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:67,},
+    333:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:66,},
+    334:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:65,},
+    335:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:64,},
+    336:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:63,},
+    337:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:62,},
+    338:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:61,},
+    339:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:60,},
+    340:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:59,},
+    341:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:58,},
+    342:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:57,},
+    343:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:56,},
+    344:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:55,},
+    345:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:54,},
+    346:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:53,},
+    347:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:52,},
+    348:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:51,},
+    349:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:50,},
+    350:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:49,},
+    351:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:48,},
+    352:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:47,},
+    353:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:46,},
+    354:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:45,},
+    355:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:44,},
+    356:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:43,},
+    357:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:42,},
+    358:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:41,},
+    359:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:40,},
+    360:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:39,},
+    361:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:38,},
+    362:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:37,},
+    363:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:36,},
+    364:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:35,},
+    365:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:34,},
+    366:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:33,},
+    367:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:32,},
+    368:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:31,},
+    369:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:30,},
+    370:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:29,},
+    371:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:28,},
+    372:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:27,},
+    373:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:26,},
+    374:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:25,},
+    375:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:24,},
+    376:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:23,},
+    377:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:22,},
+    378:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:21,},
+    379:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:20,},
+    380:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:19,},
+    381:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:18,},
+    382:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:17,},
+    383:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:16,},
+    384:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:15,},
+    385:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:14,},
+    386:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:13,},
+    387:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:12,},
+    388:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:11,},
+    389:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:10,},
+    405:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:94,},
+    406:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:93,},
+    407:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:92,},
+    408:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:91,},
+    409:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:90,},
+    410:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:89,},
+    411:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:88,},
+    412:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:87,},
+    413:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:86,},
+    414:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:85,},
+    415:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:84,},
+    416:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:83,},
+    417:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:82,},
+    418:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:81,},
+    419:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:80,},
+    420:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:79,},
+    421:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:78,},
+    422:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:77,},
+    423:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:76,},
+    424:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:75,},
+    425:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:74,},
+    426:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:73,},
+    427:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:72,},
+    428:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:71,},
+    429:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:70,},
+    430:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:69,},
+    431:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:68,},
+    432:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:67,},
+    433:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:66,},
+    434:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:65,},
+    435:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:64,},
+    436:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:63,},
+    437:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:62,},
+    438:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:61,},
+    439:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:60,},
+    440:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:59,},
+    441:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:58,},
+    442:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:57,},
+    443:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:56,},
+    444:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:55,},
+    445:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:54,},
+    446:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:53,},
+    447:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:52,},
+    448:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:51,},
+    449:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:50,},
+    450:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:49,},
+    451:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:48,},
+    452:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:47,},
+    453:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:46,},
+    454:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:45,},
+    455:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:44,},
+    456:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:43,},
+    457:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:42,},
+    458:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:41,},
+    459:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:40,},
+    460:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:39,},
+    461:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:38,},
+    462:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:37,},
+    463:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:36,},
+    464:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:35,},
+    465:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:34,},
+    466:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:33,},
+    467:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:32,},
+    468:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:31,},
+    469:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:30,},
+    470:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:29,},
+    471:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:28,},
+    472:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:27,},
+    473:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:26,},
+    474:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:25,},
+    475:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:24,},
+    476:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:23,},
+    477:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:22,},
+    478:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:21,},
+    479:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:20,},
+    480:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:19,},
+    481:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:18,},
+    482:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:17,},
+    483:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:16,},
+    484:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:15,},
+    485:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:14,},
+    486:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:13,},
+    487:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:12,},
+    488:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:11,},
+    489:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:10,},
+
+}
+function allSearch(){
+var id;
+var searchContant={
+    verbose:1,
+    type_filter:["Instance","Class"],
+    node_filter:[],
+    data_filter:{
+      name:{
+        data:"",
+        fuzzy:0
+      },
+      entity_type:{
+        data:"Tank",
+        fuzzy:0
+      }
+    }
+};
+searchContant.data_filter.name.data=$('#allSearch').val();
+$.ajax({
+    url:'http://60.30.25.140:8001/neo4j/fuzzySearch/',// 跳转到 action
+    data:{
+      SearchContant:JSON.stringify(searchContant),
+    },
+    type:'post',
+    cache:false,
+    dataType:'json',
+    success:function(data) {
+     id=data.id;
+     if(id!=null){
+       localStorage.setItem("id",id);
+window.open("index.html",'newwindow');
+}else{
+  alert("未搜索到导弹！")
+}
+},
+    error:function(){
+  //    alert("搜索错误！")
+    }
+});
+}
+function setStyle(x){};
+var p=-1;
+var nodes;
+var edges;
+
+NewRadar={
+main_type:"Config",
+    mountpoint:[],
+    entries:[
+			{
+			id:-1,
+			type:"Config",
+			parents:[],
+			data:
+			{
+				entity_type:"Tank",
+				name:"",
+				desc:""
+			}
+		},
+		],
+};
+//获取图的数据
+var map={
+  entity_type:"Tank"
+}
+//获取图的数据
+$.ajax({
+    url:'http://60.30.25.140:8001/neo4j/',// 跳转到 action
+    data:{
+      id:"0",
+      filter:JSON.stringify(map),
+    },
+    type:'post',
+    cache:false,
+    dataType:'json',
+    success:function(data) {
+      nodes=data.nodes;
+      edges=data.edges;
+
+			//建立图
+			// create a network
+			var container = document.getElementById('mynetwork');
+			// provide the data in the vis format
+			var data = {
+			    nodes: nodes,
+			    edges: edges
+			};
+			var options = {
+      //画布宽高
+      width:"900px",
+      height:"815px",
+      //自动重绘
+      autoResize:true,
+      clickToUse:true,
+      edges:{
+      color:{
+        highlight:'#ff1744',
+        hover:'#ff1744',
+        inherit:false
+      },
+      hoverWidth:4,
+      selectionWidth:4,
+      },
+      groups:levels,
+      layout: {
+         improvedLayout:true,
+         hierarchical: {
+           levelSeparation:400,//层距
+           nodeSpacing:50,    //同层间距
+           direction: 'LR',        // UD, DU, LR, RL
+         }
+       },
+        interaction:{
+					keyboard:{
+						enabled:false,//去掉这句
+						speed:{
+							x:1,
+							y:1,
+							zoom:0.02,
+						},
+						bindToWindow:true,
+					},
+          hideEdgesOnDrag:false,
+          hoverConnectedEdges:true,
+          dragView:true,
+          hover:true,
+          multiselect:true,
+          navigationButtons:true,
+          zoomView:true,
+      },
+      };
+			var network = new vis.Network(container, data, options);
+			//建立图结束
+			network.on("click", function (params) {
+					params.event = "[original event]";
+			//    this.getNodeAt(params.pointer.DOM)
+			// var nodeName;
+			// var nodeContant;
+			// var nodeGroup;
+			// var test;
+			$.ajax({
+					url:'http://60.30.25.140:8001/neo4j/graphInformation/',// 跳转到 action
+					data:{
+						id:this.getNodeAt(params.pointer.DOM),
+					},
+					type:'post',
+					cache:false,
+					dataType:'json',
+					success:function(kill) {
+					// nodeName=data.name;
+					// nodeContant=data.contant;
+					// nodeGroup=data.group;
+					// test=data.test;
+					radarId=kill.id;
+					radarType=kill.type;
+					radarName=kill.data.name;
+					radarContant=kill.data.desc;
+					radarInclude=kill.include;
+
+					if(radarType=="SubTest"){
+						//测试子项
+						if(selected!=""&&selected!=null){
+
+			NewRadar.mountpoint[NewRadar.mountpoint.length]={
+				from:radarId,
+				to:selectedId.toString()
+			}
+
+							// alert(nodeName)
+							selected.find("tbody").append('<tr><td id="0" class="success">新增的测试子项</td></tr>');
+							$("#0").click(function(){
+								//已有测试子项点击
+								NewRadar.mountpoint.remove($(this).attr("id"));
+								$(this).remove();
+											});
+							$('#0').text(radarName);
+							$('#0').attr("id",radarId);
+						}else{
+							alert("请选择测试项！")
+						}
+					}else if(radarType=="Test"){
+						//测试项
+						NewRadar.mountpoint[NewRadar.mountpoint.length]={
+							from:radarId,
+							to:p.toString()
+						};
+						$('#new').before('<div tabindex="-1" onfocus="setStyle(this.id)" id="test" name="test" class="panel panel-primary onFocus" style="margin-top:10px"> <div class="panel-heading"> <h3 class="panel-title" style="text-align:center">测试项名称</h3> </div> <div class="panel-body"> <table class="table table-hover" style="margin-bottom:0px"> <tbody name="x"> </tbody> </table> </div> <!-- 新增按钮开始 --> <div class="row clearfix" style="margin-left:20px; width:680px"> <div class="col-md-2 column"> </div> <div class="col-md-8 column"> <button type="button" class="btn btn-block btn-lg btn-primary" data-toggle="modal" data-target="#exampleModal1" style="margin:30px" >新增测试子项</button> </div> <div class="col-md-2 column"> </div> </div> <!-- 新增按钮结束 --> </div>');
+						$("#test").click(function(){
+						//已有测试项点击事件
+						selected=$(this);
+						selectedId=$(this).attr("id");
+			//			$(this).toggleClass('onFocus');
+						});
+						for (var x of radarInclude){
+						    // alert(node1[test].testSon[testSon].name);
+						    // alert(node1[test].testSon[testSon].type==1);
+						      $("#test").find("tbody").append('<tr><td id="0" class="primary">新增的测试子项</td></tr>');
+									$("#0").click(function(){
+										//现有测试子项点击
+													});
+									$('#0').text(x.data.name);
+									$('#0').attr("id",x.id);
+						//  $('#body').append('<tr><td class="success">新增的测试子项</td></tr><tr><td class="success">新增的测试子项</td></tr><tr><td class="success">新增的测试子项</td></tr>')
+					};
+					$("#test").attr("id",radarId);
+					$("h3:last").text(radarName);
+				}else{
+						//类别
+			NewRadar.entries[0].parents[NewRadar.entries[0].parents.length]=radarId;
+			for (var x of radarInclude) {
+				$('#new').before('<div tabindex="-1" onfocus="setStyle(this.id)" id="test" name="test" class="panel panel-primary" style="margin-top:10px"> <div class="panel-heading"> <h3 class="panel-title" style="text-align:center">测试项名称</h3> </div> <div class="panel-body"> <table class="table table-hover" style="margin-bottom:0px"> <tbody name="x"> </tbody> </table> </div> <!-- 新增按钮开始 --> <div class="row clearfix" style="margin-left:20px; width:680px"> <div class="col-md-2 column"> </div> <div class="col-md-8 column"> <button type="button" class="btn btn-block btn-lg btn-primary" data-toggle="modal" data-target="#exampleModal1" style="margin:30px" >新增测试子项</button> </div> <div class="col-md-2 column"> </div> </div> <!-- 新增按钮结束 --> </div>');
+				$("#test").click(function(){
+				//已有测试项点击事件
+				selected=$(this);
+				selectedId=$(this).attr("id");
+				});
+
+			  for(var testSon of x.include){
+			    // alert(node1[test].testSon[testSon].name);
+			    // alert(node1[test].testSon[testSon].type==1);
+					$("#test").find("tbody").append('<tr><td id="0" class="primary">新增的测试子项</td></tr>');
+					$("#0").click(function(){
+						//现有测试子项点击
+									});
+					$('#0').text(testSon.data.name);
+					$('#0').attr("id",testSon.id);
+			  }
+				$("#test").attr("id",x.id);
+				$("h3:last").text(x.data.name);
+			//  $('#body').append('<tr><td class="success">新增的测试子项</td></tr><tr><td class="success">新增的测试子项</td></tr><tr><td class="success">新增的测试子项</td></tr>')
+			}
+			};
+
+					},
+					 error : function() {
+								alert("获取测试项信息异常！");
+					 }
+			});
+
+			});
+     },
+     error : function() {
+      //    alert("获取Map异常！");
+     }
+});
+//获取图数据结束
+
+var selected;
+var selectedId;
+var radarId;
+var radarType;
+var radarName;
+var radarContant;
+var radarInclude;
+var myId=-1;
+//已有删除算法
+Array.prototype.indexOf = function(val) {
+	for (var i = 0; i < this.length; i++) {
+	if (this[i].from == val) return i;
+	}
+	return -1;
+};
+
+Array.prototype.remove = function(val) {
+ var index = this.indexOf(val);
+ if (index > -1) {
+ this.splice(index, 1);
+}
+};
+//新增删除算法
+Array.prototype.indexOf1 = function(val) {
+for (var i = 0; i < this.length; i++) {
+if (this[i].id == val) return i;
+}
+return -1;
+};
+
+Array.prototype.remove1 = function(val) {
+var index = this.indexOf1(val);
+if (index > -1) {
+this.splice(index, 1);
+}
+};
+//删除算法结束
+
+
+
+
+//自己增加
+var radars;
+function search(){
+	var searchContant={
+	    verbose:1,
+	    type_filter:["Test"],
+	    node_filter:[],
+	    data_filter:{
+	      name:{
+	        data:"",
+	        fuzzy:0
+	      },
+	      entity_type:{
+	        data:"Tank",
+	        fuzzy:0
+	      }
+	    }
+	};
+	searchContant.type_filter[0]="Test";
+	searchContant.data_filter.name.data=$('#recipient-name').val();
+	$.ajax({
+	    url:'http://60.30.25.140:8001/neo4j/fuzzySearch/',// 跳转到 action
+	    data:{
+	      SearchContant:JSON.stringify(searchContant),
+	    },
+	    type:'post',
+	    cache:false,
+	    dataType:'json',
+	    success:function(data) {
+	     radars=data;
+
+			 if(radars.data==""||radars.data==null){
+			 	$('#message-text').attr("placeholder","未搜索到匹配的测试子项");
+			 }else{
+			 	$('#message-text').attr("placeholder",radars.data.desc);
+			 }
+
+	     },
+	     error : function() {
+	      //    alert("搜索异常！");
+	     }
+	});
+  // $('#message-text').attr("placeholder","未搜索到匹配的测试子项")
+
+}
+
+function addTest(){
+// newTest[newTest.length]={
+// 	name:$('#recipient-name').val(),
+// 	contant:$('#message-text').val()
+// };
+if(radars==""||radars==null){
+	myId--;
+	NewRadar.mountpoint[NewRadar.mountpoint.length]={
+		from:myId.toString(),
+		to:p.toString()
+	};
+	NewRadar.entries[NewRadar.entries.length]={
+   id:myId.toString(),
+	 type:"Test",
+	 parents:[],
+	 data:{
+		 entity_type:"Tank",
+		 name:$('#recipient-name').val(),
+		 desc:$('#message-text').val(),
+	 },
+	}
+	$('#new').before('<div tabindex="-1" onfocus="setStyle(this.id)" id="test" name="test" class="panel panel-danger" style="margin-top:10px"> <div class="panel-heading"> <h3 class="panel-title" style="text-align:center">测试项名称</h3> </div> <div class="panel-body"> <table class="table table-hover" style="margin-bottom:0px"> <tbody name="x"> </tbody> </table> </div> <!-- 新增按钮开始 --> <div class="row clearfix" style="margin-left:20px; width:680px"> <div class="col-md-2 column"> </div> <div class="col-md-8 column"> <button type="button" class="btn btn-block btn-lg btn-primary" data-toggle="modal" data-target="#exampleModal1" style="margin:30px" >新增测试子项</button> </div> <div class="col-md-2 column"> </div> </div> <!-- 新增按钮结束 --> </div>');
+	$('#test').click(function(){
+//新增测试项的点击事件
+selected=$(this);
+selectedId=$(this).attr("id");
+	});
+	$("#test").attr("id",myId);
+	$("h3:last").text($('#recipient-name').val());
+	$('#recipient-name').attr("placeholder","搜索名称");
+	$('#message-text').attr("placeholder","描述");
+	$('#recipient-name').val("");
+	$('#message-text').val("");
+		 $('#exampleModal').modal('toggle');
+}else{
+	NewRadar.mountpoint[NewRadar.mountpoint.length]={
+		from:radars.id,
+		to:p.toString()
+	};
+
+
+
+	$('#new').before('<div tabindex="-1" onfocus="setStyle(this.id)" id="test" name="test" class="panel panel-primary" style="margin-top:10px"> <div class="panel-heading"> <h3 class="panel-title" style="text-align:center">测试项名称</h3> </div> <div class="panel-body"> <table class="table table-hover" style="margin-bottom:0px"> <tbody name="x"> </tbody> </table> </div> <!-- 新增按钮开始 --> <div class="row clearfix" style="margin-left:20px; width:680px"> <div class="col-md-2 column"> </div> <div class="col-md-8 column"> <button type="button" class="btn btn-block btn-lg btn-primary" data-toggle="modal" data-target="#exampleModal1" style="margin:30px" >新增测试子项</button> </div> <div class="col-md-2 column"> </div> </div> <!-- 新增按钮结束 --> </div>');
+	$("#test").click(function(){
+	//已有测试项点击事件
+	selected=$(this);
+	selectedId=$(this).attr("id");
+	});
+	for (var x of radars.include){
+			// alert(node1[test].testSon[testSon].name);
+			// alert(node1[test].testSon[testSon].type==1);
+				$("#test").find("tbody").append('<tr><td id="0" class="primary">新增的测试子项</td></tr>');
+				$("#0").click(function(){
+					//现有测试子项点击
+								});
+				$('#0').text(x.data.name);
+				$('#0').attr("id",x.id);
+	//  $('#body').append('<tr><td class="success">新增的测试子项</td></tr><tr><td class="success">新增的测试子项</td></tr><tr><td class="success">新增的测试子项</td></tr>')
+};
+$("#test").attr("id",radars.id);
+$("h3:last").text(radars.data.name);
+$('#recipient-name').attr("placeholder","搜索名称");
+$('#message-text').attr("placeholder","描述");
+	$('#recipient-name').val("")
+	$('#message-text').val("")
+		 $('#exampleModal').modal('toggle');
+		 radars=null;
+}
+};
+
+
+var radars1;
+function search1(){
+	var searchContant={
+	    verbose:1,
+	    type_filter:["SubTest"],
+	    node_filter:[],
+	    data_filter:{
+	      name:{
+	        data:"",
+	        fuzzy:0
+	      },
+	      entity_type:{
+	        data:"Tank",
+	        fuzzy:0
+	      }
+	    }
+	};
+	searchContant.type_filter[0]="SubTest";
+	searchContant.data_filter.name.data=$('#recipient-name1').val();
+	$.ajax({
+	    url:'http://60.30.25.140:8001/neo4j/fuzzySearch/',// 跳转到 action
+	    data:{
+	      SearchContant:JSON.stringify(searchContant),
+	    },
+	    type:'post',
+	    cache:false,
+	    dataType:'json',
+	    success:function(data) {
+	     radars1=data;
+			 if(radars1.data==""||radars1.data==null){
+			 	$('#message-text1').attr("placeholder","未搜索到匹配的测试子项");
+			 }else{
+			 	$('#message-text1').attr("placeholder",radars1.data.desc);
+			 }
+	     },
+	     error : function() {
+	     //     alert("搜索异常！");
+	     }
+	});
+  // $('#message-text').attr("placeholder","未搜索到匹配的测试子项")
+
+};
+function addTest1(){
+	if(radars==""||radars==null){
+		myId--;
+		NewRadar.mountpoint[NewRadar.mountpoint.length]={
+			from:myId.toString(),
+			to:selectedId.toString()
+		};
+		NewRadar.entries[NewRadar.entries.length]={
+	   id:myId.toString(),
+		 type:"SubTest",
+		 parents:[],
+		 data:{
+			 entity_type:"Tank",
+			 name:$('#recipient-name1').val(),
+			 desc:$('#message-text1').val(),
+		 }
+	 };
+	 selected.find("tbody").append('<tr><td id="0" class="danger">新增的测试子项</td></tr>');
+	 $("#0").click(function(){
+		 //新增测试子项点击事件
+		 NewRadar.mountpoint.remove($(this).attr("id"));
+		 NewRadar.entries.remove1($(this).attr("id"));
+		 $(this).remove();
+					 });
+	 $('#0').text($('#recipient-name1').val());
+	 $('#0').attr("id",myId);
+
+		// $('#new').before('<div id="test" name="test" class="panel panel-primary" style="margin-top:10px"> <div class="panel-heading"> <h3 class="panel-title" style="text-align:center">测试项名称</h3> </div> <div class="panel-body"> <table class="table table-hover" style="margin-bottom:0px"> <tbody name="x"> </tbody> </table> </div> <!-- 新增按钮开始 --> <div class="row clearfix"> <div class="col-md-2 column"> </div> <div class="col-md-8 column"> <button type="button" class="btn btn-block btn-lg btn-primary" data-toggle="modal" data-target="#exampleModal1" style="margin:30px" >新增测试子项</button> </div> <div class="col-md-2 column"> </div> </div> <!-- 新增按钮结束 --> </div>');
+		// $("#test").click(function(){
+		// // alert($(this).attr("id"));
+		// // selected=$(this);
+		// // selectedId=myId;
+		// });
+		// $("#test").attr("id",myId);
+		// $("h3:last").text($('#recipient-name').val());
+		$('#recipient-name1').attr("placeholder","搜索名称");
+		$('#message-text1').attr("placeholder","描述");
+		$('#recipient-name1').val("");
+		$('#message-text1').val("");
+			 $('#exampleModal1').modal('toggle');
+	}else{
+	NewRadar.mountpoint[NewRadar.mountpoint.length]={
+			from:radars.id,
+			to:p.toString()
+		};
+		// alert(nodeName)
+		selected.find("tbody").append('<tr><td id="0" class="success">新增的测试子项</td></tr>');
+		$("#0").click(function(){
+			//已有测试子项点击
+			NewRadar.mountpoint.remove($(this).attr("id"));
+			$(this).remove();
+						});
+		$('#0').text(radars.data.name);
+		$('#0').attr("id",radars.id);
+		$('#recipient-name1').attr("placeholder","搜索名称");
+		$('#message-text1').attr("placeholder","描述");
+		$('#recipient-name1').val("")
+		$('#message-text1').val("")
+			 $('#exampleModal1').modal('toggle');
+			 radars=null;
+	}
+//
+// 	x.find("tbody").append('<tr><td id="0" class="danger">新增的测试子项1</td></tr>');
+// 	$('#0').text($('#recipient-name1').val());
+// 	$('#0').attr("id",radars[0].id);
+//
+// $('#recipient-name1').val("")
+// $('#message-text1').val("")
+// 	 $('#exampleModal1').modal('toggle');
+}
+
+
+
+//自己增加结束
+		//取消按钮
+				$("#radarCancel").click(function(){
+				// window.location.href = "newNode.html";
+				window.location.replace("index.html");
+				});
+		//确认按钮
+				$("#radarConfirm").click(function(){
+					NewRadar.entries[0].data.name=$("#a").val();
+					NewRadar.entries[0].data.desc=$("#b").val();
+		  	// window.location.href = "newNode.html";
+// alert(JSON.stringify(NewRadar))
+				$.ajax({
+						url:'http://60.30.25.140:8001/neo4j/createNode/',// 跳转到 action
+						data:{
+							NewNode:JSON.stringify(NewRadar),
+						},
+						type:'post',
+						cache:false,
+						dataType:'json',
+						success:function(data) {
+						// alert("上传成功")
+						// radarId=data.id;
+						// radartype=data.type;
+						// radarName=data.name;
+						// radarContant=data.contant;
+						// radarInclude=data.include;
+						location.reload();
+						},
+						 error : function() {
+						//			alert("上传失败！");
+						 }
+				});
+
+
+			  // window.location.replace("index.html");
+			  });
+</script>
+
+</html>

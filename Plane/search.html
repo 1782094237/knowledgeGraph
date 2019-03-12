@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 适配移动设备 -->
+  <title>工业App</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="../vis-4.21.0/dist/vis.css">
+  <link rel="stylesheet" href="../lib/bootstrap.css">
+  <link rel="stylesheet" href="../css/style.css" media="screen" type="text/css"/>
+  <!-- <link rel="stylesheet" href="lib/jquery-ui.css"> -->
+  <link rel="stylesheet" href="../lib/bootstrap-table.css">
+  <!-- <script src="lib/jquery-ui.js"></script> -->
+  <script src="../lib/jquery-3.3.1.js"></script>
+  <script src="../lib/bootstrap.js"></script>
+  <script src='../vis-4.21.0/dist/vis.js'></script>
+  <script src="../lib/bootstrap-table.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-default navbar-inverse" role="navigation" style="mar">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <!-- <div class="navbar-header">
+        <a class="navbar-brand" href="#">装备需求测试系统</a>
+      </div> -->
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li  class="dropdown">
+            <a style="font-size:14px" href="#" class="dropdown-toggle" data-toggle="dropdown">类别<span class="caret"></span></a>
+            <ul  class="dropdown-menu" role="menu">
+              <li ><a href="../Radar/index.html">雷达</a></li>
+              <li class="divider"></li>
+              <li class="active"><a href="index.html">飞机</a></li>
+              <li class="divider"></li>
+              <li><a href="../Tank/index.html">导弹</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <div class="navbar-form navbar-left form-group">
+          <input id="allSearch" type="text" class="form-control" placeholder="name">
+          <button type="search" class="btn btn-default" onclick="allSearch()">Search</button>
+        </div>
+
+  <h3 class="nav navbar-nav" style="margin-left: 430px;margin-top: 10px;color:white;font-size: 28px;font-family:'微软雅黑';font-weight:550">装备需求测试系统</h3>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a style="font-size:14px" href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
+        <ul id="login-dp" class="dropdown-menu">
+          <li>
+             <div class="row">
+                <div class="col-md-12">
+                   <form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
+                      <div class="form-group">
+                         <label class="sr-only" for="exampleInputEmail2">Email address</label>
+                         <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Email address" required>
+                      </div>
+                      <div class="form-group">
+                         <label class="sr-only" for="exampleInputPassword2">Password</label>
+                         <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password" required>
+                                               <div class="help-block text-right"><a href="">Forget the password ?</a></div>
+                      </div>
+                      <div class="form-group">
+                         <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+                      </div>
+                   </form>
+                </div>
+             </div>
+          </li>
+        </ul>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+
+  <div style="margin-bottom:4px">
+  <link href="css/font-awesome.css" rel="stylesheet">
+  <ul id="breadcrumb">
+    <li><a href="map.html"><span class="	glyphicon glyphicon-play"> </span></a></li>
+    <li><a href="index.html"><span class="glyphicon glyphicon-th-large"> </span> 浏览</a></li>
+    <li><a href="search.html"><span class="glyphicon glyphicon-search"></span> 搜索</a></li>
+    <li><a href="newNode.html"><span class="glyphicon glyphicon-plus"> </span> 测试项</a></li>
+    <li><a href="newConfig.html"><span class="glyphicon glyphicon-plus"> </span> 配置项</a></li>
+    <li><a href="newClass.html"><span class="glyphicon glyphicon-plus"> </span> 基础飞机</a></li>
+    <li><a href="newRadar.html"><span class="glyphicon glyphicon-plus"> </span> 实例飞机</a></li>
+  </ul>
+  </div>
+<div class="container">
+	<div class="row clearfix" >
+
+
+
+
+
+<!-- 左边图 -->
+
+
+
+<!-- 画图元素 -->
+<div  class="col-md-6 column" style="height:830px;overflow-x:scroll;overflow-y:scroll;background-color:white">
+<div class="row clearfix" >
+		<div class="col-md-12 column">
+			<div class="row clearfix">
+
+        <div id="look" class="col-md-12 column"style="height:80px;overflow-x:scroll;  border-style: solid;
+      border-width:1px;border-color:rgb(209, 209, 209);">
+<!-- 按钮组 -->
+      <div id="submit" class="col-md-2 column" style="margin-top:5px;">
+<button type="button" class="btn btn-block btn-lg btn-primary"style="width:100px;" onclick="submit()">筛选</button>
+      </div>
+    </div>
+			</div>
+		</div>
+	</div>
+<hr>
+<div id="mynetwork" style="background-color:white">
+</div>
+<button  type="button" class="btn btn-block btn-lg btn-success" onclick="allMap()">查看完整图</button>
+</div>
+<!-- 画图元素结束 -->
+	<!-- <div class="col-md-6 column">
+      <div class="row clearfix">
+        <div class="col-md-12 column">
+           <button type="button" class="btn btn-block btn-lg btn-success">查看完整图</button>
+        </div>
+      </div>
+		</div> -->
+<!-- 左边图结束 -->
+<!-- 右边表 -->
+		<div class="col-md-6 column">
+      <!-- 选择框 -->
+      				<ul class="nav nav-tabs">
+      					<li>
+      						 <a href="index.html">浏览</a>
+      					</li>
+      					<li class="active">
+      						 <a href="search.html">搜索</a>
+      					</li>
+      				</ul>
+      <!-- 选择框结束			 -->
+<!-- 搜索框 -->
+      <div class="input-group input-group-lg col-md-6 col-md-offset-3" style="padding-top: 30px">
+          <input id="contant" type="text" class="form-control" placeholder="搜索飞机"style="text-align: center;">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-primary btn-lg" onclick="submit()">
+              <span class="glyphicon glyphicon-search" style="color: rgb(255, 255, 255); font-size: 27px;"></span>
+            </button>
+          </span>
+      </div>
+<!-- 搜索框结束 -->
+
+<hr>
+<!-- 新增按钮 -->
+      <button type="button" class="btn btn-lg btn-block btn-primary" id="newRadar">新增装备</button>
+<!-- 新增按钮结束 -->
+<hr>
+<div style="height:583px;overflow-x:scroll;overflow-y:scroll;  border-style: solid;
+border-width:1px;border-color:rgb(209, 209, 209);background-color:white">
+      <table id="table" data-toggle="table">
+
+      </table>
+</div>
+		</div>
+<!-- 右边表结束 -->
+	</div>
+<!-- 底部地址 -->
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="row clearfix">
+				<div class="col-md-3 column">
+				</div>
+				<div class="col-md-3 column">
+				</div>
+				<div class="col-md-3 column">
+				</div>
+				<div class="col-md-3 column">
+					 <address> <strong>Twitter, Inc.</strong><br /> 795 Folsom Ave, Suite 600<br /> San Francisco, CA 94107<br /> <abbr title="Phone">P:</abbr> (123) 456-7890</address>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- 底部地址结束 -->
+</div>
+</body>
+<script type="text/javascript">
+function allMap(){
+  window.open("map.html",'newwindow');
+}
+var levels={
+  1:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background:'#3498db', highlight: { border: '#131418', background: '#3498db' }, hover: { border: '#131418', background: '#3498db' } }, fixed: { x:false, y:false }, font:{ color:"#ffffff", size:30, face:"arial", }, heightConstraint:{ minimum:40, },
+  level:100,},
+  102:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#2ecc71', highlight: { border: '#131418', background: '#2ecc71' }, hover: { border: '#131418', background: '#2ecc71' } }, fixed: { x:false, y:false }, font:{ color:"#ffffff", size:30, face:"arial", }, heightConstraint:{ minimum:40, },
+  level:98,},
+  203:{ borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#9C27B0', highlight: { border: '#131418', background: '#9C27B0' }, hover: { border: '#131418', background: '#9C27B0' } }, fixed: { x:false, y:false }, font:{ color:"#ffffff", size:30, face:"arial", }, heightConstraint:{ minimum:40, },
+  level:96,},
+  304:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:95,},
+    305:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:94,},
+    306:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:93,},
+    307:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:92,},
+    308:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:91,},
+    309:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:90,},
+    310:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:89,},
+    311:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:88,},
+    312:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:87,},
+    313:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:86,},
+    314:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:85,},
+    315:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:84,},
+    316:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:83,},
+    317:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:82,},
+    318:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:81,},
+    319:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:80,},
+    320:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:79,},
+    321:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:78,},
+    322:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:77,},
+    323:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:76,},
+    324:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:75,},
+    325:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:74,},
+    326:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:73,},
+    327:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:72,},
+    328:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:71,},
+    329:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:70,},
+    330:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:69,},
+    331:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:68,},
+    332:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:67,},
+    333:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:66,},
+    334:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:65,},
+    335:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:64,},
+    336:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:63,},
+    337:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:62,},
+    338:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:61,},
+    339:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:60,},
+    340:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:59,},
+    341:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:58,},
+    342:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:57,},
+    343:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:56,},
+    344:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:55,},
+    345:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:54,},
+    346:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:53,},
+    347:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:52,},
+    348:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:51,},
+    349:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:50,},
+    350:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:49,},
+    351:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:48,},
+    352:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:47,},
+    353:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:46,},
+    354:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:45,},
+    355:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:44,},
+    356:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:43,},
+    357:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:42,},
+    358:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:41,},
+    359:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:40,},
+    360:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:39,},
+    361:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:38,},
+    362:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:37,},
+    363:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:36,},
+    364:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:35,},
+    365:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:34,},
+    366:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:33,},
+    367:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:32,},
+    368:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:31,},
+    369:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:30,},
+    370:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:29,},
+    371:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:28,},
+    372:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:27,},
+    373:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:26,},
+    374:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:25,},
+    375:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:24,},
+    376:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:23,},
+    377:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:22,},
+    378:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:21,},
+    379:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:20,},
+    380:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:19,},
+    381:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:18,},
+    382:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:17,},
+    383:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:16,},
+    384:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:15,},
+    385:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:14,},
+    386:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:13,},
+    387:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:12,},
+    388:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:11,},
+    389:{borderWidth: 2, chosen:true, color: { border: '#95a5a6', background: '#FF8C00', highlight: { border: '#131418', background: '#FF8C00' }, hover: { border: '#131418', background: '#FF8C00' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, },level:10,},
+    405:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:94,},
+    406:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:93,},
+    407:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:92,},
+    408:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:91,},
+    409:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:90,},
+    410:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:89,},
+    411:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:88,},
+    412:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:87,},
+    413:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:86,},
+    414:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:85,},
+    415:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:84,},
+    416:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:83,},
+    417:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:82,},
+    418:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:81,},
+    419:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:80,},
+    420:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:79,},
+    421:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:78,},
+    422:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:77,},
+    423:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:76,},
+    424:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:75,},
+    425:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:74,},
+    426:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:73,},
+    427:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:72,},
+    428:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:71,},
+    429:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:70,},
+    430:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:69,},
+    431:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:68,},
+    432:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:67,},
+    433:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:66,},
+    434:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:65,},
+    435:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:64,},
+    436:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:63,},
+    437:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:62,},
+    438:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:61,},
+    439:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:60,},
+    440:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:59,},
+    441:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:58,},
+    442:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:57,},
+    443:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:56,},
+    444:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:55,},
+    445:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:54,},
+    446:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:53,},
+    447:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:52,},
+    448:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:51,},
+    449:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:50,},
+    450:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:49,},
+    451:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:48,},
+    452:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:47,},
+    453:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:46,},
+    454:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:45,},
+    455:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:44,},
+    456:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:43,},
+    457:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:42,},
+    458:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:41,},
+    459:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:40,},
+    460:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:39,},
+    461:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:38,},
+    462:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:37,},
+    463:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:36,},
+    464:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:35,},
+    465:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:34,},
+    466:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:33,},
+    467:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:32,},
+    468:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:31,},
+    469:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:30,},
+    470:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:29,},
+    471:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:28,},
+    472:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:27,},
+    473:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:26,},
+    474:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:25,},
+    475:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:24,},
+    476:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:23,},
+    477:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:22,},
+    478:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:21,},
+    479:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:20,},
+    480:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:19,},
+    481:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:18,},
+    482:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:17,},
+    483:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:16,},
+    484:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:15,},
+    485:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:14,},
+    486:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:13,},
+    487:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:12,},
+    488:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:11,},
+    489:{borderWidth: 2,chosen:true,color: {border: '#95a5a6',background: '#FF69B4',highlight: {border: '#131418',background: '#FF69B4'},hover: { border: '#131418', background: '#FF69B4' } }, fixed: { x:false, y:false }, font:{ color:'#ffffff', size:40, face:'arial', }, heightConstraint:{ minimum:40, }, shape:'box', margin:{ top:15, right:15, bottom:15, left:15, }, level:10,},
+}
+function allSearch(){
+var id;
+var searchContant={
+    verbose:1,
+    type_filter:["Instance","Class"],
+    node_filter:[],
+    data_filter:{
+      name:{
+        data:"",
+        fuzzy:0
+      },
+      entity_type:{
+        data:"Plane",
+        fuzzy:0
+      }
+    }
+};
+searchContant.data_filter.name.data=$('#allSearch').val();
+$.ajax({
+    url:'http://60.30.25.140:8001/neo4j/fuzzySearch/',// 跳转到 action
+    data:{
+      SearchContant:JSON.stringify(searchContant),
+    },
+    type:'post',
+    cache:false,
+    dataType:'json',
+    success:function(data) {
+     id=data.id;
+     if(id!=null){
+       localStorage.setItem("id",id);
+window.open("index.html",'newwindow');
+}else{
+  alert("未搜索到飞机！")
+}
+},
+    error:function(){
+    //  alert("搜索错误！")
+    }
+});
+}
+
+
+var tableData=new Array;
+var allData=new Array;
+var nodes;
+var edges;
+var radars=new Array;
+$("#table").bootstrapTable({ // 对应table标签的id
+      striped: true,  //表格显示条纹，默认为false
+      pagination: true, // 在表格底部显示分页组件，默认false
+      pageSize: 100, // 页面数据条数
+      sortName: 'name', // 要排序的字段
+      sortOrder: 'asc', // 排序规则
+columns: [{
+    field: 'name',
+    title: '飞机名称'
+},{
+   field: 'type',
+   title: '类型'
+},{
+    field: 'desc',
+    title: '飞机描述'
+}],
+});
+begin={
+    verbose:0,
+    type_filter:["Class", "Instance"],
+    node_filter:[],
+    data_filter:{
+      name:{
+        data:"",
+        fuzzy:1
+      },
+      entity_type:{
+        data:"Plane",
+        fuzzy:0
+      }
+    }
+}
+$.ajax({
+    url:'http://60.30.25.140:8001/neo4j/fuzzySearch/',// 跳转到 action
+    data:{
+      SearchContant:JSON.stringify(begin),
+    },
+    type:'post',
+    cache:false,
+    dataType:'json',
+    success:function(data) {
+      // alert(JSON.stringify(data))
+      tableData.splice(0,tableData.length);
+     radars=data.results;
+// alert(JSON.stringify(radars));
+for(var x=0;x<radars.length;x++){
+  tableData[x]={
+    name:radars[x].data.name,
+    type:radars[x].type,
+    desc:radars[x].data.desc,
+  }
+};
+$('#table').bootstrapTable('load', tableData);
+// alert(JSON.stringify(tableData))
+
+     // initialize your network!
+     },
+     error : function() {
+    //      alert("搜索失败！");
+     }
+});
+
+
+
+
+//获取图的数据
+var map={
+  entity_type:"Plane"
+}
+//获取图的数据
+$.ajax({
+    url:'http://60.30.25.140:8001/neo4j/',// 跳转到 action
+    data:{
+      id:"0",
+      filter:JSON.stringify(map),
+    },
+    type:'post',
+    cache:false,
+    dataType:'json',
+    success:function(data) {
+
+      nodes=data.nodes;
+      edges=data.edges;
+      //获取图数据结束
+      //建立图
+      // create a network
+      var options = {
+      //画布宽高
+      width:"900px",
+      height:"815px",
+      //自动重绘
+      autoResize:true,
+      clickToUse:true,
+      edges:{
+      color:{
+        highlight:'#ff1744',
+        hover:'#ff1744',
+        inherit:false
+      },
+      hoverWidth:4,
+      selectionWidth:4,
+      },
+      groups:levels,
+      layout: {
+         improvedLayout:true,
+         hierarchical: {
+           levelSeparation:400,//层距
+           nodeSpacing:50,    //同层间距
+           direction: 'LR',        // UD, DU, LR, RL
+         }
+       },
+        interaction:{
+          keyboard:true,
+          hideEdgesOnDrag:false,
+          hoverConnectedEdges:true,
+          dragView:true,
+          hover:true,
+          multiselect:true,
+          navigationButtons:true,
+          zoomView:true,
+      },
+      };
+
+      var container = document.getElementById('mynetwork');
+      // provide the data in the vis format
+      var data = {
+          nodes: nodes,
+          edges: edges
+      };
+      var network = new vis.Network(container, data, options);
+      //建立图结束
+      network.on("click", function (params) {
+          params.event = "[original event]";
+      //    this.getNodeAt(params.pointer.DOM)
+      var nodeName;
+       searchContant.node_filter[searchContant.node_filter.length]=this.getNodeAt(params.pointer.DOM);
+      for(var i=0;i<nodes.length;i++){
+        if(nodes[i].id==this.getNodeAt(params.pointer.DOM)){
+          nodeName=nodes[i].label;
+        }
+      }
+      // alert(nodeName)
+      $('#submit').before(' <div  class="col-md-2 column"style="margin-top:5px"><button id="cancel" type="button" name="0" class="btn btn-block btn-lg btn-success" "></button></div>')
+      $("button[name=0]").click(function(){
+           // alert($(this).attr("name"));
+           // searchContant.node_filter
+           Array.prototype.indexOf = function(val) {
+            for (var i = 0; i < this.length; i++) {
+            if (this[i] == val) return i;
+           }
+            return -1;
+           };
+
+           Array.prototype.remove = function(val) {
+            var index = this.indexOf(val);
+            if (index > -1) {
+            this.splice(index, 1);
+      }
+      };
+
+      searchContant.node_filter.remove($(this).attr("name"));
+      $(this).remove();
+      // alert(JSON.stringify(searchContant.node_filter));
+              });
+      $('button[name=0]').text(nodeName);
+      $('button[name=0]').attr("name",this.getNodeAt(params.pointer.DOM));
+      // alert($('button[name=1]').attr("name"))
+      // alert(JSON.stringify(searchContant.node_filter));
+      });
+     },
+     error : function() {
+        //  alert("获取总Map异常！");
+     }
+});
+
+var searchContant={
+    verbose:0,
+    type_filter:["Class", "Instance"],
+    node_filter:[],
+    data_filter:{
+      name:{
+        data:"",
+        fuzzy:1
+      },
+      entity_type:{
+        data:"Plane",
+        fuzzy:0
+      }
+    }
+};
+
+function unique(array) {
+    return [...new Set(array)];
+}
+
+function submit(){
+searchContant.node_filter=unique(searchContant.node_filter);
+searchContant.data_filter.name.data=$("#contant").val();
+// alert(searchContant.query)
+$.ajax({
+    url:'http://60.30.25.140:8001/neo4j/fuzzySearch/',// 跳转到 action
+    data:{
+      SearchContant:JSON.stringify(searchContant),
+    },
+    type:'post',
+    cache:false,
+    dataType:'json',
+    success:function(data) {
+      tableData.splice(0,tableData.length);
+     radars=data.results;
+// alert(JSON.stringify(radars));
+for(var x=0;x<radars.length;x++){
+  tableData[x]={
+    name:radars[x].data.name,
+    type:radars[x].type,
+    desc:radars[x].data.desc,
+  }
+};
+$('#table').bootstrapTable('load', tableData);
+// alert(JSON.stringify(tableData))
+// tableData.splice(0,tableData.length);
+     // initialize your network!
+     },
+     error : function() {
+      //    alert("搜索失败！");
+     }
+});
+}
+
+
+$(document).ready(function(){
+  $('#table').on('click-row.bs.table', function (e, row, element){
+//  console.log(row.name);
+    var id;
+    for(var x of radars){
+      if(x.data.name==row.name){
+        id=x.id;
+      }
+    };
+    // alert(id)
+localStorage.setItem("id", id);
+window.open("index.html",'newwindow');
+});
+  $("#newRadar").click(function(){
+// window.location.href = "newNode.html";
+window.location.replace("newRadar.html");
+});
+//按钮点击
+//按钮点击事件结束
+});
+//传输数据
+
+</script>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 适配移动设备 -->
+  <title>工业App</title>
+  <link rel="stylesheet" href="test.css">
+  <link rel="stylesheet" href="vis-4.21.0/dist/vis.css">
+  <link rel="stylesheet" href="lib/bootstrap.css">
+  <link rel="stylesheet" href="css/style.css" media="screen" type="text/css"/>
+  <!-- <link rel="stylesheet" href="lib/jquery-ui.css"> -->
+  <link rel="stylesheet" href="lib/bootstrap-table.css">
+  <!-- <script src="lib/jquery-ui.js"></script> -->
+  <script src="lib/jquery-3.3.1.js"></script>
+  <script src="lib/bootstrap.js"></script>
+  <script src='vis-4.21.0/dist/vis.js'></script>
+  <script src="lib/bootstrap-table.js"></script>
+</head>
+<body id="LoginForm">
+<div class="container">
+<h1 class="form-heading">装备软件测试系统</h1>
+<div class="login-form">
+<div class="main-div">
+    <div class="panel">
+   <h2>Admin Login</h2>
+   <p>为了方便展示，登陆界面的默认账号密码已经写入，可以直接登陆，无需填写。<br>若点击登陆无反应，请检查您的浏览器是否阻止弹出页面。</p>
+
+   </div>
+
+        <div id="Login" class="form-group">
+            <input type="email" class="form-control" id="inputEmail" value="1782094237@qq.com">
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" id="inputPassword" value="123456">
+        </div>
+        <div class="forgot">
+        <a href="reset.html">Forgot password?</a>
+</div>
+        <button type="submit" class="btn btn-primary" onclick="index()">Login</button>
+
+    </div>
+
+</div></div></div>
+
+
+
+</body>
+<script type="text/javascript">
+function index(){
+//
+//     $.ajax({
+//           url:'http://60.30.25.140:8001/neo4j/admin/',// 跳转到 action
+//           data: {
+//               username: $("#inputEmail").val(),
+//               password: $('#inputPassword').val()
+//           },
+//           type:'post',
+//           cache:false,
+//           dataType:'json',
+//                          success:function (data) {
+//                              if (data.status==0){
+// //                                 alert('登录成功')
+
+window.open("Radar/index.html",'newwindow');
+
+//                              }else if(data.status===1){
+// //                             alert('用户名未注册')
+//
+//                              }else{
+// //                                 alert('密码错误')
+//                              }
+//                          },
+//                          error:function(){
+// //                         alert("错误")
+//                          }
+//
+//                      });
+
+
+}
+</script>
+</html>
